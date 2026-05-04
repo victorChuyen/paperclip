@@ -80,7 +80,9 @@ function isRouteOrAuthzTest(file) {
 function runVitest(args, label) {
   console.log(`\n[test:run] ${label}`);
   invocationIndex += 1;
-  const testRoot = mkdtempSync(path.join(os.tmpdir(), `paperclip-vitest-${process.pid}-${invocationIndex}-`));
+  const localTmp = path.join(repoRoot, ".tmp");
+  mkdirSync(localTmp, { recursive: true });
+  const testRoot = mkdtempSync(path.join(localTmp, `paperclip-vitest-${process.pid}-${invocationIndex}-`));
   const env = {
     ...process.env,
     PAPERCLIP_HOME: path.join(testRoot, "home"),
@@ -93,6 +95,7 @@ function runVitest(args, label) {
     cwd: repoRoot,
     env,
     stdio: "inherit",
+    shell: true,
   });
   if (result.error) {
     console.error(`[test:run] Failed to start Vitest: ${result.error.message}`);

@@ -1,0 +1,14 @@
+{
+  "coreTools": {
+    "codebase_investigator": {
+      "model": "gemini-2.5-flash"
+    },
+    "code_executor": {
+      "model": "gemini-2.5-flash"
+    }
+  },
+  "selectedAuthType": "api-key",
+  "theme": "monokai",
+  "model": "gemini-2.5-flash",
+  "agentModel": "gemini-2.5-flash"
+}
