@@ -416,17 +416,17 @@ function hydrateDialogQueries(queryClient: ReturnType<typeof useQueryClient>) {
   ]);
 }
 
-const HERMES_AGENT: Agent = {
-  id: "agent-hermes",
+const FALLBACK_AGENT: Agent = {
+  id: "agent-fallback",
   companyId: COMPANY_ID,
-  name: "HermesRouter",
-  urlKey: "hermesrouter",
+  name: "FallbackRouter",
+  urlKey: "fallbackrouter",
   role: "engineer",
   title: "Lightweight Routing",
   icon: "code",
   status: "idle",
   reportsTo: "agent-cto",
-  capabilities: "Hermes-backed assistant on an adapter without the cheap-profile contract.",
+  capabilities: "Fallback-backed assistant on an adapter without the cheap-profile contract.",
   adapterType: "opencode_local",
   adapterConfig: {},
   runtimeConfig: {},
@@ -716,7 +716,7 @@ function useCheapLaneAdapterOverrides(variant: CheapLaneVariant) {
     if (variant !== "unsupported") return;
     queryClient.setQueryData(
       queryKeys.agents.list(COMPANY_ID),
-      [...storybookAgents, HERMES_AGENT],
+      [...storybookAgents, FALLBACK_AGENT],
     );
     queryClient.setQueryData(queryKeys.adapters.all, [
       {
@@ -761,14 +761,14 @@ function CheapLaneIssueDialogOpener({ variant }: { variant: CheapLaneVariant }) 
   const { openNewIssue } = useDialog();
   useCheapLaneAdapterOverrides(variant);
 
-  const assigneeAgentId = variant === "unsupported" ? "agent-hermes" : "agent-codex";
+  const assigneeAgentId = variant === "unsupported" ? "agent-fallback" : "agent-codex";
   const title =
     variant === "unsupported"
-      ? "Route research summary to HermesRouter"
+      ? "Route research summary to FallbackRouter"
       : "Generate weekly Storybook coverage report";
   const description =
     variant === "unsupported"
-      ? "HermesRouter runs on an adapter that does not advertise a cheap profile, so the Cheap lane should disappear instead of being greyed."
+      ? "FallbackRouter runs on an adapter that does not advertise a cheap profile, so the Cheap lane should disappear instead of being greyed."
       : "Lower-cost runs should still pick up the agent's cheap profile so the model badge can show the requested lane.";
 
   useOpenWhenCompanyReady(() => {
@@ -932,7 +932,7 @@ export const NewIssueCheapLaneUnsupported: Story = {
     <DialogStory
       eyebrow="NewIssueDialog"
       title="Model lane on an adapter without supportsModelProfiles"
-      description="HermesRouter runs on opencode_local with supportsModelProfiles disabled, so the Cheap option should be hidden — the segmented control collapses to Primary | Custom rather than showing a greyed Cheap entry."
+      description="FallbackRouter runs on opencode_local with supportsModelProfiles disabled, so the Cheap option should be hidden — the segmented control collapses to Primary | Custom rather than showing a greyed Cheap entry."
       badges={["model lane", "unsupported", "cheap hidden"]}
     >
       <CheapLaneIssueDialogOpener variant="unsupported" />
