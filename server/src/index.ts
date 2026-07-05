@@ -34,6 +34,7 @@ import {
   instanceSettingsService,
   reconcilePersistedRuntimeServicesOnStartup,
   routineService,
+  startTelegramBotService,
 } from "./services/index.js";
 import { createFeedbackTraceShareClientFromConfig } from "./services/feedback-share-client.js";
 import { buildRuntimeApiCandidateUrls, choosePrimaryRuntimeApiUrl } from "./runtime-api.js";
@@ -655,6 +656,9 @@ export async function startServer(): Promise<StartedServer> {
     deploymentMode: config.deploymentMode,
     resolveSessionFromHeaders,
   });
+
+  // Khởi chạy Telegram Command Center
+  startTelegramBotService(db as any);
 
   void reconcilePersistedRuntimeServicesOnStartup(db as any)
     .then((result) => {
