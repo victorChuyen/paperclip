@@ -5761,7 +5761,10 @@ export function heartbeatService(db: Db, options: HeartbeatServiceOptions = {}) 
       }
       const adapterResult = await adapter.execute({
         runId: run.id,
-        agent,
+        agent: {
+          ...agent,
+          adapterConfig: runtimeConfig as Record<string, unknown>,
+        },
         runtime: runtimeForAdapter,
         config: runtimeConfig,
         context,
